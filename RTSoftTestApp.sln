@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTSoftTestApp", "RTSoftTestApp\RTSoftTestApp.csproj", "{51E1AD8A-6B51-4A6B-835E-856A90910D46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51E1AD8A-6B51-4A6B-835E-856A90910D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E1AD8A-6B51-4A6B-835E-856A90910D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E1AD8A-6B51-4A6B-835E-856A90910D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E1AD8A-6B51-4A6B-835E-856A90910D46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C29E69A1-CCE2-4AA0-AE3F-0652CF95CDD3}
+	EndGlobalSection
+EndGlobal
