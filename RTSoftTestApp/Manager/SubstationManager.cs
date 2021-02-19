@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RTSoftTestApp.Model
+namespace RTSoftTestApp.Manager
 {
-    public class Substations
+    public class SubstationManager
     {
         private Dictionary<Guid, Substation> _dictSubstations = new Dictionary<Guid, Substation>();
         private Dictionary<Guid, Guid> _dictVLsSubstations = new Dictionary<Guid, Guid>();
@@ -48,25 +48,6 @@ namespace RTSoftTestApp.Model
             _synchronousMachineBufferedList.Clear();
 
             return _dictSubstations.Values.ToArray();
-        }
-
-        public static List<KeyValuePair<string, List<KeyValuePair<string, string[]>>>> GetSubstatationList(IEnumerable<Substation> substations)
-        {
-            //var subst = substations.Select(s => new[] { s.Name, s.VoltageLevels.Select(vl => new[] { vl.Name, vl.SynchronousMachines.Select(sm => sm.Name).ToArray() }).ToArray() }).ToArray();
-
-            var list = new List<KeyValuePair<string, List<KeyValuePair<string, string[]>>>>();
-            //foreach (var substation in substations)
-            //{                
-            //    var listVL = new List<KeyValuePair<string, string[]>>();
-            //    //foreach (var vl in substation.VoltageLevels)
-            //    //{
-            //    //    listVL.Add(new KeyValuePair<string, string[]>(vl.Name, vl.SynchronousMachines.Select(sm => sm.Name).ToArray()));   
-            //    //}
-            //    var vls = substation.VoltageLevels.Select(vl => new[] { vl.Name, vl.SynchronousMachines.Select(sm => sm.Name).ToArray() }).ToArray();
-            //    list.Add(new KeyValuePair<string, List<KeyValuePair<string, string[]>>>(substation.Name, listVL));
-            //}
-
-            return list;
         }
 
         public void AddSubstation(Guid substationGuid, string name)

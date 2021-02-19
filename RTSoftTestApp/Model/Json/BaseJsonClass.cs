@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RTSoftTestApp.Converter;
 using System;
 
 namespace RTSoftTestApp.Model.Json

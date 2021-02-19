@@ -1,18 +1,16 @@
 ﻿using RTSoftTestApp.Extensions;
+using RTSoftTestApp.Manager;
 using RTSoftTestApp.Model.Json;
 using System;
-using System.Collections.Generic;
 using System.Xml;
 
-namespace RTSoftTestApp
+namespace RTSoftTestApp.Xml
 {
     public class CustomXmlReader
     {
         #region Xml consts
 
         public const string GuidPrefix = "#_";
-
-        public const string Root = "rdf:RDF";
 
         /// <summary>
         /// Тег с идентификатором объекта. Guid
@@ -55,10 +53,10 @@ namespace RTSoftTestApp
 
         public Substation[] ReadXml(string filename)
         {
-            if (String.IsNullOrWhiteSpace(filename))
+            if (string.IsNullOrWhiteSpace(filename))
                 throw new ArgumentNullException(nameof(filename));
 
-            var substations = new Substations();
+            var manager = new SubstationManager();
             using (var reader = new XmlTextReader(filename))
             {
                 while (reader.Read())
@@ -68,61 +66,52 @@ namespace RTSoftTestApp
 
                     switch (reader.Name)
                     {
-                        case CustomXmlReader.Substation:
-                            //var (guid, name) = readGuidAndName(reader);
+                        case Substation:
                             var guid = readObjectGuid(reader);
                             if (!guid.HasValue)
                                 throw new NullReferenceException(nameof(guid));
 
-                            var (name, _) = readObjectNameAndParentGuid(reader, String.Empty);
+                            var (name, _) = readObjectNameAndParentGuid(reader, string.Empty);
 
-                            substations.AddSubstation(guid.Value, name);
+                            manager.AddSubstation(guid.Value, name);
                             break;
-                        case CustomXmlReader.Voltagelevel:
-                            //(guid, name) = readGuidAndName(reader);
+                        case Voltagelevel:
                             guid = readObjectGuid(reader);
                             if (!guid.HasValue)
                                 throw new NullReferenceException(nameof(guid));
 
-                            //var substationGuid = readParentObjectGuid(reader, CustomXmlReader.VoltageLevelSubstation);
-                            var (voltagelevelName, substationGuid) = readObjectNameAndParentGuid(reader, CustomXmlReader.VoltageLevelSubstation);
+                            var (voltagelevelName, substationGuid) = readObjectNameAndParentGuid(reader, VoltageLevelSubstation);
                             if (!substationGuid.HasValue)
                                 throw new NullReferenceException(nameof(substationGuid));
 
-                            substations.AddVoltageLevel(substationGuid.Value, guid.Value, voltagelevelName);
+                            manager.AddVoltageLevel(substationGuid.Value, guid.Value, voltagelevelName);
 
                             break;
-                        case CustomXmlReader.SynchronousMachine:
+                        case SynchronousMachine:
 
-                            #region Parse SynchronousMachine
-
-                            //(guid, name) = readGuidAndName(reader);
                             guid = readObjectGuid(reader);
                             if (!guid.HasValue)
                                 throw new NullReferenceException(nameof(guid));
 
-                            //var voltageLevelGuid = readParentObjectGuid(reader, CustomXmlReader.EquipmentContainer);
-                            var (synchronousMachineName, voltageLevelGuid) = readObjectNameAndParentGuid(reader, CustomXmlReader.EquipmentContainer);
+                            var (synchronousMachineName, voltageLevelGuid) = readObjectNameAndParentGuid(reader, EquipmentContainer);
                             if (!voltageLevelGuid.HasValue)
                                 throw new NullReferenceException(nameof(voltageLevelGuid));
 
-                            substations.AddSynchronousMachine(voltageLevelGuid.Value, guid.Value, synchronousMachineName);
-
-                            #endregion
+                            manager.AddSynchronousMachine(voltageLevelGuid.Value, guid.Value, synchronousMachineName);
 
                             break;
                     }
                 }
             }
 
-            return substations.GetSubstations();
+            return manager.GetSubstations();
         }
 
         #region Private Methods
 
         private Guid? readObjectGuid(XmlReader reader)
         {
-            reader.MoveToAttribute(CustomXmlReader.About);
+            reader.MoveToAttribute(About);
             return XmlCustomExtention.ParseGuid(reader.Value, GuidPrefix);
         }
 
@@ -133,21 +122,25 @@ namespace RTSoftTestApp
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element)
-                {
+                if (reader.NodeType != XmlNodeType.Element)
+                    continue;
 
-                    if (reader.Name == CustomXmlReader.ObjectName)
-                    {
+                switch (reader.Name)
+                {
+                    case ObjectName:
                         name = reader.ReadString();
-                    }
-                    else if (reader.Name == parentObjectTagName)
-                    {
-                        reader.MoveToAttribute(CustomXmlReader.ResourceId);
-                        guid = XmlCustomExtention.ParseGuid(reader.Value, GuidPrefix);
-                    }
+                        break;
+                    default:
+                        if (reader.Name == parentObjectTagName)
+                        {
+                            reader.MoveToAttribute(ResourceId);
+                            guid = XmlCustomExtention.ParseGuid(reader.Value, GuidPrefix);
+                        }
+
+                        break;
                 }
 
-                if (!String.IsNullOrEmpty(name) && (String.IsNullOrEmpty(parentObjectTagName) || guid.HasValue))
+                if (!string.IsNullOrEmpty(name) && (string.IsNullOrEmpty(parentObjectTagName) || guid.HasValue))
                     break;
             }
 

@@ -2,7 +2,7 @@
 using RTSoftTestApp.Model.Json;
 using System;
 
-namespace RTSoftTestApp
+namespace RTSoftTestApp.Converter
 {
     public class CustomConverter : JsonConverter
     {
@@ -30,7 +30,7 @@ namespace RTSoftTestApp
 
                 writer.WriteStartArray();
 
-                foreach(var sm in vl.SynchronousMachines)
+                foreach (var sm in vl.SynchronousMachines)
                 {
                     writer.WriteValue(sm.Name);
                 }
