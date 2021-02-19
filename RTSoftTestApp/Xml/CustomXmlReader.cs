@@ -2,6 +2,7 @@
 using RTSoftTestApp.Manager;
 using RTSoftTestApp.Model.Json;
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace RTSoftTestApp.Xml
@@ -51,7 +52,7 @@ namespace RTSoftTestApp.Xml
 
         #endregion
 
-        public Substation[] ReadXml(string filename)
+        public IEnumerable<Substation> ReadXml(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
                 throw new ArgumentNullException(nameof(filename));

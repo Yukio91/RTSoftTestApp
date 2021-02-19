@@ -12,7 +12,7 @@ namespace RTSoftTestApp.Manager
         private List<Tuple<Guid, Guid, string>> _voltageLevelBufferedList = new List<Tuple<Guid, Guid, string>>();
         private List<Tuple<Guid, Guid, string>> _synchronousMachineBufferedList = new List<Tuple<Guid, Guid, string>>();
 
-        public Substation[] GetSubstations()
+        public IEnumerable<Substation> GetSubstations()
         {
             foreach (var (substationGuid, voltageLevelGuid, name) in _voltageLevelBufferedList)
             {
@@ -47,7 +47,7 @@ namespace RTSoftTestApp.Manager
             }
             _synchronousMachineBufferedList.Clear();
 
-            return _dictSubstations.Values.ToArray();
+            return _dictSubstations.Values;
         }
 
         public void AddSubstation(Guid substationGuid, string name)
